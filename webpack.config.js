@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require(`dotenv-webpack`);
 
 module.exports = {
   entry: './src/index.js',
@@ -10,21 +10,24 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
-	devServer: {
-		contentBase: './dist'
-	},
-	devtool: 'eval-source-map',
+  resolve: {
+    fallback: {
+      "path": require.resolve("path-browserify")
+      // "fs": false // If you don't have a suitable polyfill for 'fs', set it to false
+    }
+  },
+  devServer: {
+    static: './dist'
+  },
+  devtool: 'eval-source-map',
   plugins: [
-		new ESLintPlugin(),
-		new CleanWebpackPlugin({
-			verbose: true
-		}),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Shape Tracker',
+      title: '',
       template: './src/index.html',
       inject: 'body'
     }),
-    new Dotenv(),
+    new Dotenv()
   ],
   module: {
     rules: [
@@ -41,18 +44,19 @@ module.exports = {
         ]
       },
       {
-        test: /\.html$/,
+        test:/\.html$/,
         use: [
           'html-loader'
         ]
       },
       {
-        test: /\.css$/,
+        test: /\.s[ac]ss$/i,
         use: [
           'style-loader',
-          'css-loader'
+          'css-loader',
+          'sass-loader'
         ]
       }
     ]
   }
-}
+};
