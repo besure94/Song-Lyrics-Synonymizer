@@ -6,19 +6,15 @@ import Lyrist from './LyristApiCall.js';
 async function getLyrics() {
   let response = await Lyrist.getSongLyrics();
   displaySongLyrics(response);
-  // if (response === 200) {
-  //   console.log(response, "response");
-  //   displaySongLyrics(response);
-  // }
 }
 
 function displaySongLyrics(response) {
-  console.log(response, "display lyrics response");
+  document.querySelector("div#lyricsDiv").innerText = "";
   let displayLyricsDiv = document.createElement("div");
   let displayLyrics = document.createElement("p");
   displayLyrics.innerText = response[0].lyrics;
-  console.log(displayLyrics);
   displayLyricsDiv.appendChild(displayLyrics);
+  document.querySelector("div#lyricsDiv").appendChild(displayLyricsDiv);
 }
 
 window.addEventListener("load", function(event) {
