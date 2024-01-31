@@ -8,7 +8,7 @@ export default class ThesaurusAPI {
       
       if (!response) {
         throw new Error(`the API gave no response`);
-      } else 
+      }
       if (response[0].synonyms.length === 0) {
         throw new Error(`'${wordInput}' has no synonyms`);
       }
