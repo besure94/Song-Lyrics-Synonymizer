@@ -1,6 +1,6 @@
 import { thesaurus } from "thesaurus-js"
 
-export default class ThesaurusAIP {
+export default class ThesaurusAPI {
   
   static async get(wordInput) {
     try {
