@@ -1,7 +1,6 @@
 import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
-import Lyrist from './LyristApiCall.js';
+import Lyrist from './js/LyristApiCall.js';
 
 async function getLyrics() {
   let response = await Lyrist.getSongLyrics();
