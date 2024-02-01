@@ -6,23 +6,29 @@ export default class PartsOfSpeech {
     const tagger = new Pos.Tagger();
     return tagger.tag(words);
   }
+
+  static isValidTag(tag) {
+    // regex checks for only allowed tags. See below
+    const regex = new RegExp(/^[JVUNR][^P]\w*/);
+
+    return regex.test(tag);
+  }
+
   static filterValidSynonyms(string) {
     const taggedWords = this.tagWords(string);
-    const regex = new RegExp(/^[JVUNR][^P]\w*/);
+    // this regex checks for only allowed tags. See below
     let list = [];
 
     for (const [word, tag] of taggedWords) {
-      if (regex.test(tag)) {
+      if (this.isValidTag(tag)) {
         list.push(word);
       }
     }
-    return list
+    return list;
   }
 }
 
-/*
-// ^[JVUNR][^P] /g
-to allow:
+/* to allow:
 JJ Adjective                big
 JJR Adj., comparative       bigger
 JJS Adj., superlative       biggest
@@ -37,5 +43,4 @@ VBD verb, past tense        ate
 VBG verb, gerund            eating
 VBN verb, past part         eaten
 VBP Verb, present           eat
-VBZ Verb, present           eats
-*/
+VBZ Verb, present           eats */
