@@ -1,6 +1,6 @@
 export default class LyricsService {
-  static async getData(artist, title) {
-    if (artist === "") {
+  static async getData(title, artist) {
+    if (artist === undefined || artist === "") {
       const response = await fetch(`https://lyrist.vercel.app/api/${title}`);
       const jsonifiedResponse = await response.json();
       if (!response.ok) {
