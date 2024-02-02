@@ -1,6 +1,20 @@
 import * as Pos from 'parts-of-speech'
 
 export default class PartsOfSpeech {
+  static preFilterWords(string) {
+    const lyricArray = string.split(/[ \n]/);
+    let filteredLyrics = []
+
+    for (const word of lyricArray) {
+      //filter out [chorus] or similar, and the pronouns parts-of-speech doesn't get
+      if (/[\[\]]/.test(word) || [`I`, `I'm`, `I'll`].includes(word)) {
+        continue;
+      }
+      filteredLyrics.push(word);
+    }
+    return filteredLyrics;
+  }
+
   static tagWords(string) {
     const words = new Pos.Lexer().lex(string);
     const tagger = new Pos.Tagger();
