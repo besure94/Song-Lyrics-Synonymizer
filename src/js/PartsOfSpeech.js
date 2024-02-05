@@ -1,30 +1,53 @@
-import * as Pos from 'parts-of-speech'
+import Compendium from 'compendium-js'
 
 export default class PartsOfSpeech {
-  static tagWords(string) {
-    const words = new Pos.Lexer().lex(string);
-    const tagger = new Pos.Tagger();
-    return tagger.tag(words);
+
+  static preFilter(string) {
+    // cut out [Verse] etc
+    let newString = string.replaceAll(/\[.*\]\n/g, ``);
+    // space linebreak characters (you /n How... instead of you/nHow...)
+    newString = newString.replaceAll(`\n`,` \n `);
+
+    return newString;
   }
 
-  static isValidTag(tag) {
-    // regex checks for only allowed tags. See below
-    const regex = new RegExp(/^[JVUNR][^P]\w*/);
-
-    return regex.test(tag);
-  }
-
-  static filterValidSynonyms(string) {
-    const taggedWords = this.tagWords(string);
-    // this regex checks for only allowed tags. See below
-    let list = [];
-
-    for (const [word, tag] of taggedWords) {
-      if (this.isValidTag(tag)) {
-        list.push(word);
+  static async filterPos(string) {
+    let filteredMap = await this.getPos(string);
+    for (const key of filteredMap.keys()) {
+      // remove unwanted entries in the pos map. See bottom
+      if(!/^([JMNU]\w[^P]|V|RB)\w*/.test(key)) {
+        filteredMap.delete(key);
+      } else {
+        // filter out contractions
+        filteredMap.set(key, filteredMap.get(key).filter(word => !word.includes(`'`)));
       }
     }
-    return list;
+    return filteredMap;
+  }
+
+  static async filterAsArray(string) {
+    return Array.from(await this.filterPos(string)).map(element => element[1]).flat();
+  }
+  
+  static async getPos(string) {
+    const analysis = await Compendium.analyse(this.preFilter(string));
+    console.log(analysis);
+    let posMap = new Map();
+    for (const sentence of analysis) {
+      // execute on every token analyzed
+      for (const wordData of sentence.tokens) {
+        // lower case form
+        const word = wordData.norm;
+        const wordPos = wordData.pos;
+
+        if (!posMap.has(wordPos)) {
+          posMap.set(wordPos, [word]);
+        } else if (!posMap.get(wordPos).includes(word)) {
+          posMap.set(wordPos, posMap.get(wordPos).concat([word]));
+        }
+      }
+    }
+    return posMap;
   }
 }
 
@@ -32,9 +55,10 @@ export default class PartsOfSpeech {
 JJ Adjective                big
 JJR Adj., comparative       bigger
 JJS Adj., superlative       biggest
+MD Modal                    can,should
 NN Noun, sing. or mass      dog
 NNS Noun, plural            dogs
-RB Adverb                   quickly
+RB Adverb                   quickly, not
 RBR Adverb, comparative     faster
 RBS Adverb, superlative     fastest
 UH Interjection             oh, oops
