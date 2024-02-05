@@ -14,21 +14,28 @@ export default class PartsOfSpeech {
   static async filterPos(string) {
     let filteredMap = await this.getPos(string);
     for (const key of filteredMap.keys()) {
+      // remove unwanted entries in the pos map. See bottom
       if(!/^([JMNU]\w[^P]|V|RB)\w*/.test(key)) {
         filteredMap.delete(key);
+      } else {
+        // filter out contractions
+        filteredMap.set(key, filteredMap.get(key).filter(word => !word.includes(`'`)));
       }
     }
     return filteredMap;
   }
   
   static async getPos(string) {
-    const analysis = await Compendium.analyse(this.preFilter(string), null, [`sentiment`, `entities`, `negation`, `type`, `numeric`]);
+    const analysis = await Compendium.analyse(this.preFilter(string));
+    console.log(analysis);
     let posMap = new Map();
     for (const sentence of analysis) {
+      // execute on every token analyzed
       for (const wordData of sentence.tokens) {
-        console.log(wordData)
+        // lower case form
         const word = wordData.norm;
         const wordPos = wordData.pos;
+
         if (!posMap.has(wordPos)) {
           posMap.set(wordPos, [word]);
         } else if (!posMap.get(wordPos).includes(word)) {
