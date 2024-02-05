@@ -1,27 +1,53 @@
 import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import LyricsService from './js/LyricsService.js';
+import LyricsDumpStorage from './js/LyricsDumpStorage.js';
 
 async function getLyrics(title, artist) {
   let response = await LyricsService.getData(title, artist);
-  displaySongLyrics(response);
+  let returnLyrics = response.lyrics;
+  return returnLyrics;
 }
 
 function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").innerText = "";
   let displayLyricsDiv = document.createElement("div");
   let displayLyrics = document.createElement("p");
-  displayLyrics.innerText = response.lyrics;
+  displayLyrics.innerText = response;
   displayLyricsDiv.appendChild(displayLyrics);
   document.querySelector("div#lyricsDiv").appendChild(displayLyricsDiv);
 }
 
-window.addEventListener("load", function(event) {
+window.addEventListener("load", function (event) {
   event.preventDefault();
+  const lyricsStorage = new LyricsDumpStorage();
   document.querySelector("form#searchSong").addEventListener("submit", function (e) {
     e.preventDefault();
-    let artistData = document.getElementById("artist").value;
+
     let titleData = document.getElementById("song").value;
-    getLyrics(titleData, artistData);
+    let artistData = document.getElementById("artist").value;
+    getLyrics(titleData, artistData).then(function(lyricsResponse) {
+      document.querySelector("div#showSpeechButton").innerText = "";
+      lyricsStorage.lyricsApiResponse = lyricsResponse;
+      displaySongLyrics(lyricsStorage.lyricsApiResponse);
+      let button = document.createElement("button");
+      button.textContent = "Speak!";
+      button.setAttribute("id", "textToSpeech");
+      document.querySelector("div#showSpeechButton").appendChild(button);
+  
+      button.addEventListener("click", function (evt) {
+        evt.preventDefault();
+        let lyrics = new SpeechSynthesisUtterance();
+        let voices = window.speechSynthesis.getVoices();
+        lyrics.voice = voices[2];
+        lyrics.volume = 1;
+        lyrics.rate = 1.5;
+        lyrics.pitch = 1;
+        lyrics.text = lyricsStorage.lyricsApiResponse;
+        window.speechSynthesis.speak(lyrics);
+      });
+    });
   });
 });
+
