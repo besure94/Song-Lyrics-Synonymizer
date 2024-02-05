@@ -28,16 +28,17 @@ window.addEventListener("load", function (event) {
     let titleData = document.getElementById("song").value;
     let artistData = document.getElementById("artist").value;
     getLyrics(titleData, artistData).then(function(lyricsResponse) {
-      document.querySelector("div#showSpeechButton").innerText = "";
+      document.querySelector("div#showButtons").innerText = "";
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
-      let button = document.createElement("button");
-      button.textContent = "Speak!";
-      button.setAttribute("id", "textToSpeech");
-      document.querySelector("div#showSpeechButton").appendChild(button);
+      let speakButton = document.createElement("button");
+      speakButton.textContent = "Speak!";
+      speakButton.setAttribute("id", "textToSpeech");
+      document.querySelector("div#showButtons").appendChild(speakButton);
   
-      button.addEventListener("click", function (evt) {
+      speakButton.addEventListener("click", function (evt) {
         evt.preventDefault();
+        speakButton.setAttribute("class", "hidden");
         let lyrics = new SpeechSynthesisUtterance();
         let voices = window.speechSynthesis.getVoices();
         lyrics.voice = voices[2];
@@ -46,6 +47,18 @@ window.addEventListener("load", function (event) {
         lyrics.pitch = 1;
         lyrics.text = lyricsStorage.lyricsApiResponse;
         window.speechSynthesis.speak(lyrics);
+
+        let stopButton = document.createElement("button");
+        stopButton.textContent = "Stop!";
+        stopButton.setAttribute("id", "stopButton");
+        document.getElementById("showButtons").appendChild(stopButton);
+
+        stopButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          stopButton.setAttribute("class", "hidden");
+          window.speechSynthesis.cancel();
+          speakButton.removeAttribute("class", "hidden");
+        });
       });
     });
   });
