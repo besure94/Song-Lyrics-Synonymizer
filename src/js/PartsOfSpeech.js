@@ -2,7 +2,7 @@ import Compendium from 'compendium-js'
 
 export default class PartsOfSpeech {
 
-  static preFilterInput(string) {
+  static preFilter(string) {
     let newString = string.replaceAll(/\[.*\]\n/gi, ``);
     newString = newString.replaceAll(`\n`,` \n `);
 
@@ -10,16 +10,17 @@ export default class PartsOfSpeech {
   }
   
   static async getPos(string) {
-    const analysis = await Compendium.analyse(this.preFilterInput(string), null, [`sentiment`, `entities`, `negation`, `type`, `numeric`]);
-    console.log(analysis)
+    const analysis = await Compendium.analyse(this.preFilter(string), null, [`sentiment`, `entities`, `negation`, `type`, `numeric`]);
     let posMap = new Map();
-    for (const wordData of analysis) {
-      const word = wordData.raw
-      const wordPos = wordData.pos;
-      if (!posMap.has(wordPos)) {
-        posMap.set(wordPos, [word]);
-      } else {
-        posMap.set(wordPos, posMap.get(wordPos).concat([word]));
+    for (const sentence of analysis) {
+      for (const wordData of sentence.tokens) {
+        const word = wordData.raw
+        const wordPos = wordData.pos;
+        if (!posMap.has(wordPos)) {
+          posMap.set(wordPos, [word]);
+        } else {
+          posMap.set(wordPos, posMap.get(wordPos).concat([word]));
+        }
       }
     }
     return posMap;
