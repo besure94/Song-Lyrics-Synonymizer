@@ -39,6 +39,11 @@ window.addEventListener("load", function (event) {
       button.addEventListener("click", function (evt) {
         evt.preventDefault();
         let lyrics = new SpeechSynthesisUtterance();
+        let voices = window.speechSynthesis.getVoices();
+        lyrics.voice = voices[2];
+        lyrics.volume = 1;
+        lyrics.rate = 1.5;
+        lyrics.pitch = 1;
         lyrics.text = lyricsStorage.lyricsApiResponse;
         window.speechSynthesis.speak(lyrics);
       });
