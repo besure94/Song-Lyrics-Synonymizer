@@ -24,6 +24,10 @@ export default class PartsOfSpeech {
     }
     return filteredMap;
   }
+
+  static async filterAsArray(string) {
+    return Array.from(await this.filterPos(string)).map(element => element[1]).flat();
+  }
   
   static async getPos(string) {
     const analysis = await Compendium.analyse(this.preFilter(string));
