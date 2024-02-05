@@ -1,18 +1,25 @@
 import Compendium from 'compendium-js'
 
 export default class PartsOfSpeech {
+
+  static preFilterInput(string) {
+    let newString = string.replaceAll(/\[.*\]\n/gi, ``);
+    newString = newString.replaceAll(`\n`,` \n `);
+
+    return newString;
+  }
   
   static async getPos(string) {
-    const analysis = await Compendium.analyse(string, null, [`sentiment`, `entities`, `negation`, `type`, `numeric`])[0].tokens;
+    const analysis = await Compendium.analyse(this.preFilterInput(string), null, [`sentiment`, `entities`, `negation`, `type`, `numeric`]);
     console.log(analysis)
-    let posMap = new Map()
+    let posMap = new Map();
     for (const wordData of analysis) {
       const word = wordData.raw
       const wordPos = wordData.pos;
       if (!posMap.has(wordPos)) {
         posMap.set(wordPos, [word]);
       } else {
-        posMap.set(wordPos, posMap.get(wordPos).concat([word]))
+        posMap.set(wordPos, posMap.get(wordPos).concat([word]));
       }
     }
     return posMap;
