@@ -3,10 +3,22 @@ import Compendium from 'compendium-js'
 export default class PartsOfSpeech {
 
   static preFilter(string) {
-    let newString = string.replaceAll(/\[.*\]\n/gi, ``);
+    // cut out [Verse] etc
+    let newString = string.replaceAll(/\[.*\]\n/g, ``);
+    // space linebreak characters (you /n How... instead of you/nHow...)
     newString = newString.replaceAll(`\n`,` \n `);
 
     return newString;
+  }
+
+  static async filterPos(string) {
+    let filteredMap = await this.getPos(string);
+    for (const key of filteredMap.keys()) {
+      if(!/^([JMNU]\w[^P]|V|RB)\w*/.test(key)) {
+        filteredMap.delete(key);
+      }
+    }
+    return filteredMap;
   }
   
   static async getPos(string) {
@@ -14,40 +26,28 @@ export default class PartsOfSpeech {
     let posMap = new Map();
     for (const sentence of analysis) {
       for (const wordData of sentence.tokens) {
-        const word = wordData.raw
+        console.log(wordData)
+        const word = wordData.norm;
         const wordPos = wordData.pos;
         if (!posMap.has(wordPos)) {
           posMap.set(wordPos, [word]);
-        } else {
+        } else if (!posMap.get(wordPos).includes(word)) {
           posMap.set(wordPos, posMap.get(wordPos).concat([word]));
         }
       }
     }
     return posMap;
   }
-
-
-  // static filterValidSynonyms(string) {
-  //   const taggedWords = this.tagWords(string);
-  //   // this regex checks for only allowed tags. See below
-  //   let list = [];
-
-  //   for (const [word, tag] of taggedWords) {
-  //     if (this.isValidTag(tag)) {
-  //       list.push(word);
-  //     }
-  //   }
-  //   return list;
-  // }
 }
 
 /* to allow:
 JJ Adjective                big
 JJR Adj., comparative       bigger
 JJS Adj., superlative       biggest
+MD Modal                    can,should
 NN Noun, sing. or mass      dog
 NNS Noun, plural            dogs
-RB Adverb                   quickly
+RB Adverb                   quickly, not
 RBR Adverb, comparative     faster
 RBS Adverb, superlative     fastest
 UH Interjection             oh, oops
