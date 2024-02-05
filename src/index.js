@@ -28,6 +28,7 @@ window.addEventListener("load", function (event) {
     let titleData = document.getElementById("song").value;
     let artistData = document.getElementById("artist").value;
     getLyrics(titleData, artistData).then(function(lyricsResponse) {
+      document.querySelector("div#showSpeechButton").innerText = "";
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
       let button = document.createElement("button");
