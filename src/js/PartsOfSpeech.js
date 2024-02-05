@@ -1,45 +1,36 @@
-import * as Pos from 'parts-of-speech'
+import Compendium from 'compendium-js'
 
 export default class PartsOfSpeech {
-  static preFilterWords(string) {
-    const lyricArray = string.split(/[ \n]/);
-    let filteredLyrics = []
-
-    for (const word of lyricArray) {
-      //filter out [chorus] or similar, and the pronouns parts-of-speech doesn't get
-      if (/[\[\]]/.test(word) || [`I`, `I'm`, `I'll`].includes(word)) {
-        continue;
-      }
-      filteredLyrics.push(word);
-    }
-    return filteredLyrics;
-  }
-
-  static tagWords(string) {
-    const words = new Pos.Lexer().lex(string);
-    const tagger = new Pos.Tagger();
-    return tagger.tag(words);
-  }
-
-  static isValidTag(tag) {
-    // regex checks for only allowed tags. See below
-    const regex = new RegExp(/^[JVUNR][^P]\w*/);
-
-    return regex.test(tag);
-  }
-
-  static filterValidSynonyms(string) {
-    const taggedWords = this.tagWords(string);
-    // this regex checks for only allowed tags. See below
-    let list = [];
-
-    for (const [word, tag] of taggedWords) {
-      if (this.isValidTag(tag)) {
-        list.push(word);
+  
+  static async getPos(string) {
+    const analysis = await Compendium.analyse(string, null, [`sentiment`, `entities`, `negation`, `type`, `numeric`])[0].tokens;
+    console.log(analysis)
+    let posMap = new Map()
+    for (const wordData of analysis) {
+      const word = wordData.raw
+      const wordPos = wordData.pos;
+      if (!posMap.has(wordPos)) {
+        posMap.set(wordPos, [word]);
+      } else {
+        posMap.set(wordPos, posMap.get(wordPos).concat([word]))
       }
     }
-    return list;
+    return posMap;
   }
+
+
+  // static filterValidSynonyms(string) {
+  //   const taggedWords = this.tagWords(string);
+  //   // this regex checks for only allowed tags. See below
+  //   let list = [];
+
+  //   for (const [word, tag] of taggedWords) {
+  //     if (this.isValidTag(tag)) {
+  //       list.push(word);
+  //     }
+  //   }
+  //   return list;
+  // }
 }
 
 /* to allow:
