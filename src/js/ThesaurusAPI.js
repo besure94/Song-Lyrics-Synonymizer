@@ -3,8 +3,18 @@ import { thesaurus } from "thesaurus-js"
 export default class ThesaurusAPI {
   
   static async get(wordInput) {
+    const shuffle = (array) => {
+      let oldElement;
+      for (let i = array.length - 1; i > 0; i--) {
+        let rand = Math.floor(Math.random() * (i + 1));
+        oldElement = array[i];
+        array[i] = array[rand];
+        array[rand] = oldElement;
+      }
+      return array;
+    }
     try {
-      const response = await thesaurus(wordInput, `en`, [`reverso`]);
+      let response = await thesaurus(wordInput, `en`, [`reverso`]);
       
       if (!response) {
         throw new Error(`the API gave no response`);
@@ -12,6 +22,9 @@ export default class ThesaurusAPI {
       if (response[0].synonyms.length === 0) {
         throw new Error(`'${wordInput}' has no synonyms`);
       }
+
+      response[0].synonyms = shuffle(response[0].synonyms);
+
       return response[0];
 
     } catch(error) {
