@@ -8,7 +8,6 @@ export default class Synonymizer {
       lyrics = lyrics.replaceAll('\n', ' \n ');
       const lyricsArray = lyrics.split(' ');
       const filteredLyrics = await PartsOfSpeech.filterAsArray(lyrics);
-      debugger;
       const synonymizedLyrics = [];
       let skip = 0;
       for (const word of lyricsArray) {
