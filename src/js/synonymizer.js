@@ -1,5 +1,5 @@
-import PartsOfSpeech from './js/PartsOfSpeech.js';
-import ThesaurusAPI from './js/ThesaurusAPI.js';
+import PartsOfSpeech from './PartsOfSpeech.js';
+import ThesaurusAPI from './ThesaurusAPI.js';
 
 export default class Synonymizer {
   static async synonymize(response)
