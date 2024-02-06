@@ -5,7 +5,7 @@ export default class PartsOfSpeech {
   static preFilter(string) {
     // cut out [Verse] etc
     let newString = string.replaceAll(/\[.*\]\n/g, ``);
-    // space linebreak characters (you /n How... instead of you/nHow...)
+    // space linebreak characters ('you \n How' instead of 'you\nHow')
     newString = newString.replaceAll(`\n`,` \n `);
 
     return newString;
@@ -24,17 +24,15 @@ export default class PartsOfSpeech {
     }
     return filteredMap;
   }
-
-  static async filterAsArray(string) {
-    return Array.from(await this.filterPos(string)).map(element => element[1]).flat();
-  }
   
+  // create a map, each key being a part of speech
+  // and each value being an array containing all the words that are that pos in the input
   static async getPos(string) {
+    // get whole song analysis
     const analysis = await Compendium.analyse(this.preFilter(string));
-    console.log(analysis);
     let posMap = new Map();
     for (const sentence of analysis) {
-      // execute on every token analyzed
+      // execute on every token (word or symbol) analyzed
       for (const wordData of sentence.tokens) {
         // lower case form
         const word = wordData.norm;
@@ -49,9 +47,14 @@ export default class PartsOfSpeech {
     }
     return posMap;
   }
+  
+  static async filterAsArray(string) {
+    // convert map into one big indiscriminate array
+    return Array.from(await this.filterPos(string)).map(element => element[1]).flat();
+  }
 }
 
-/* to allow:
+/* parts of speech allowed:
 JJ Adjective                big
 JJR Adj., comparative       bigger
 JJS Adj., superlative       biggest
