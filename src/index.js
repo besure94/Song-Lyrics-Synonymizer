@@ -35,10 +35,14 @@ window.addEventListener("load", function (event) {
       speakButton.textContent = "Speak!";
       speakButton.setAttribute("id", "textToSpeech");
       document.querySelector("div#showButtons").appendChild(speakButton);
+
+      let pauseResumeButton = document.createElement("button");
+      pauseResumeButton.textContent = "Pause!";
+      pauseResumeButton.setAttribute("id", "pauseResumeButton");
+      document.getElementById("showButtons").appendChild(pauseResumeButton);
   
       speakButton.addEventListener("click", function (evt) {
         evt.preventDefault();
-        speakButton.setAttribute("class", "hidden");
         let lyrics = new SpeechSynthesisUtterance();
         let voices = window.speechSynthesis.getVoices();
         lyrics.voice = voices[2];
@@ -48,16 +52,14 @@ window.addEventListener("load", function (event) {
         lyrics.text = lyricsStorage.lyricsApiResponse;
         window.speechSynthesis.speak(lyrics);
 
-        let stopButton = document.createElement("button");
-        stopButton.textContent = "Stop!";
-        stopButton.setAttribute("id", "stopButton");
-        document.getElementById("showButtons").appendChild(stopButton);
-
-        stopButton.addEventListener("click", function (event) {
-          event.preventDefault();
-          stopButton.setAttribute("class", "hidden");
-          window.speechSynthesis.cancel();
-          speakButton.removeAttribute("class", "hidden");
+        pauseResumeButton.addEventListener("click", function (event) {
+          if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
+            pauseResumeButton.value = 2;
+            window.speechSynthesis.pause();
+          } else if (pauseResumeButton.value == 2) {
+            pauseResumeButton.value = 1;
+            window.speechSynthesis.resume();
+          }
         });
       });
     });
