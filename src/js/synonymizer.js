@@ -2,8 +2,7 @@ import PartsOfSpeech from './PartsOfSpeech.js';
 import ThesaurusAPI from './ThesaurusAPI.js';
 
 export default class Synonymizer {
-  static async synonymize(response) {
-    let lyrics = response.lyrics;
+  static async synonymize(lyrics) {
     lyrics = lyrics.replaceAll('\n', ' \n ');
     const lyricsArray = lyrics.split(' ');
     const filteredLyrics = await PartsOfSpeech.filterAsArray(lyrics);
