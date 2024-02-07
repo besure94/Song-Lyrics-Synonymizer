@@ -2,15 +2,35 @@ import PartsOfSpeech from './PartsOfSpeech.js';
 import ThesaurusAPI from './ThesaurusAPI.js';
 
 export default class Synonymizer {
+
+  static async buildSynMap(response) {
+    const lyrics = PartsOfSpeech.preFilter(response.lyrics);
+    let toSynonymize = await PartsOfSpeech.filterAsArray(lyrics);
+    let synLength;
+    let synonymMap = new Map();
+
+    if (toSynonymize.length >= 100) {
+      synLength = 100;
+      toSynonymize = ThesaurusAPI.shuffle(toSynonymize);
+    } else {
+      synLength = toSynonymize.length;
+    }
+
+    for (let i = 0; i < synLength; i++) {
+      const response = await ThesaurusAPI.get(toSynonymize[i]);
+      if (response.hasOwnProperty(`synonyms`)) {
+        synonymMap.set(toSynonymize[i], response.synonyms[0]);
+      }
+    }
+
+    return synonymMap;
+  }
+
   static async synonymize(response) {
-    let lyrics = response.lyrics;
-    lyrics = lyrics.replaceAll('\n', ' \n ');
-    const lyricsArray = lyrics.split(' ');
-    const filteredLyrics = await PartsOfSpeech.filterAsArray(lyrics);
-    const synonymizedLyrics = [];
-    let skip = 0;
-    const synonymMap = new Map();
-    for (const word of lyricsArray) {
+
+    // refactor here
+
+    for (const word of lyrics.split(' ')) {
       if (skip === 1) {
         synonymizedLyrics.push(word);
         if (!word.endsWith(']')) {
