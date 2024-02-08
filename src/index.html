@@ -5,16 +5,31 @@
   </head>
     <body>
       <div class="container">
-        <h1>Song Lyrics Synonymizer</h1>
-        <p>Search for a song to get the lyrics.</p>
-        <form id="searchSong">
-          <input id="song" type="text" placeholder="Enter a song title" name="song" required>
-          <br>
-          <input id="artist" type="text" placeholder="Enter an artist name" name="artist">
-          <br>
-          <button type="submit" id="search">Go!</button>
-        </form>
-        <div id="lyricsDiv"></div>
-        <div id="showSpeechButton"></div>
+        <row class="row">
+          <col class="col">
+            <h1>Song Lyrics Synonymizer</h1>
+            <p>Search for a song to get the lyrics.</p>
+            <form id="searchSong">
+              <input id="song" type="text" placeholder="Enter a song title" name="song" required>
+              <br>
+              <input id="artist" type="text" placeholder="Enter an artist name" name="artist">
+              <br>
+              <button type="submit" id="search">Go!</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div id="lyricsDiv"></div>
+            <div id="showSpeechButton"></div>
+            <div id="showSynonymizeButton"></div>
+          </div>
+          <div class="col">
+            <div id="synonymizedLyricsDiv"></div>
+          </div>
+        </div>
+      </div>
     </body>
 </html>

@@ -20,6 +20,15 @@ function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").appendChild(displayLyricsDiv);
 }
 
+async function displaySynonymizedLyrics(lyrics) {
+  const synonymizedLyrics = await Synonymizer.synonymize(lyrics);
+  const displayLyricsDiv = document.createElement("div");
+  const displayLyrics = document.createElement("p");
+  displayLyrics.innerText = synonymizedLyrics;
+  displayLyricsDiv.appendChild(displayLyrics);
+  document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyricsDiv);
+}
+
 window.addEventListener("load", function (event) {
   event.preventDefault();
   const lyricsStorage = new LyricsDumpStorage();
@@ -33,10 +42,13 @@ window.addEventListener("load", function (event) {
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
       let button = document.createElement("button");
+      let button2 = document.createElement("button");
       button.textContent = "Speak!";
       button.setAttribute("id", "textToSpeech");
       document.querySelector("div#showSpeechButton").appendChild(button);
-  
+      button2.textContent = "Synonymize!";
+      button2.setAttribute("id", "synonymize");
+      document.querySelector("div#showSpeechButton").appendChild(button2);
       button.addEventListener("click", function (evt) {
         evt.preventDefault();
         let lyrics = new SpeechSynthesisUtterance();
@@ -47,6 +59,10 @@ window.addEventListener("load", function (event) {
         lyrics.pitch = 1;
         lyrics.text = lyricsStorage.lyricsApiResponse;
         window.speechSynthesis.speak(lyrics);
+      });
+      button2.addEventListener("click", function (evt) {
+        evt.preventDefault();
+        displaySynonymizedLyrics(lyricsStorage.lyricsApiResponse);
       });
     });
   });
