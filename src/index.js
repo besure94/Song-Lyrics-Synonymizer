@@ -19,6 +19,20 @@ function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").appendChild(displayLyricsDiv);
 }
 
+// TODO Add most tts functionality to it's own function.
+function textToSpeech(lyrics) {
+  
+  let lyrics = new SpeechSynthesisUtterance();
+  let voices = window.speechSynthesis.getVoices();
+  lyrics.voice = voices[2];
+  lyrics.volume = 1;
+  lyrics.rate = 1.5;
+  lyrics.pitch = 1;
+  lyrics.text = lyricsStorage.lyricsApiResponse;
+  let speechSynth = window.speechSynthesis.speak(lyrics);
+  return speechSynth;
+}
+
 window.addEventListener("load", function (event) {
   event.preventDefault();
   const lyricsStorage = new LyricsDumpStorage();
@@ -43,14 +57,14 @@ window.addEventListener("load", function (event) {
   
       speakButton.addEventListener("click", function (evt) {
         evt.preventDefault();
-        let lyrics = new SpeechSynthesisUtterance();
-        let voices = window.speechSynthesis.getVoices();
-        lyrics.voice = voices[2];
-        lyrics.volume = 1;
-        lyrics.rate = 1.5;
-        lyrics.pitch = 1;
-        lyrics.text = lyricsStorage.lyricsApiResponse;
-        window.speechSynthesis.speak(lyrics);
+        // let lyrics = new SpeechSynthesisUtterance();
+        // let voices = window.speechSynthesis.getVoices();
+        // lyrics.voice = voices[2];
+        // lyrics.volume = 1;
+        // lyrics.rate = 1.5;
+        // lyrics.pitch = 1;
+        // lyrics.text = lyricsStorage.lyricsApiResponse;
+        // window.speechSynthesis.speak(lyrics);
 
         pauseResumeButton.addEventListener("click", function (event) {
           if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
