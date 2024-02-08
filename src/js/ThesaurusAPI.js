@@ -20,9 +20,12 @@ export default class ThesaurusAPI {
   static async get(wordInput) {
     try {
       let response = await thesaurus(wordInput, `en`, [`wordreference`]);
-      
       if (!response) {
         throw new Error(`the API gave no response`);
+      }
+      if (typeof response !== `object`) {
+        console.log(response)
+        throw new Error(`The API gave an unexpected response: ${response}`);
       }
       if (response[0].synonyms.length === 0) {
         throw new Error(`'${wordInput}' has no synonyms`);
