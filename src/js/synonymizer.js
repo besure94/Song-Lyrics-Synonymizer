@@ -2,61 +2,48 @@ import PartsOfSpeech from './PartsOfSpeech.js';
 import ThesaurusAPI from './ThesaurusAPI.js';
 
 export default class Synonymizer {
-  static async synonymize(lyrics) {
-    lyrics = lyrics.replaceAll('\n', ' \n ');
-    const lyricsArray = lyrics.split(' ');
-    const filteredLyrics = await PartsOfSpeech.filterAsArray(lyrics);
-    const synonymizedLyrics = [];
-    let skip = 0;
-    const synonymMap = new Map();
-    for (const word of lyricsArray) {
-      if (skip === 1) {
-        synonymizedLyrics.push(word);
-        if (!word.endsWith(']')) {
-          continue;
-        }
-        else {
-          skip = 0;
-          continue;
-        }
-      }
-      else if (word.startsWith('[') && word.endsWith(']')) {
-        synonymizedLyrics.push(word);
-        continue;
-      }
-      else if (word.startsWith('[')) {
-        synonymizedLyrics.push(word);
-        skip = 1;
-        continue;
-      }
-      for (let index = 0; index < filteredLyrics.length; index++) {
-        const element = filteredLyrics[index];
-        if (word.toLowerCase() === element.toLowerCase()) {
-          if (synonymMap.has(word)) {
-            let synonym = synonymMap.get(word);
-            if (word.charAt(0) === word.charAt(0).toUpperCase()) {
-              synonym = synonym.slice(0, 1).toUpperCase() + synonym.slice(1, synonym.length);
-            }
-            synonymizedLyrics.push(synonym);
-            break;
-          }
-          else {
-            const synonyms = await ThesaurusAPI.get(word);
-            synonymMap.set(word, synonyms.synonyms[0]);
-            let synonym = synonyms.synonyms[0];
-            if (word.charAt(0) === word.charAt(0).toUpperCase()) {
-              synonym = synonym.slice(0, 1).toUpperCase() + synonym.slice(1, synonym.length);
-            }
-            synonymizedLyrics.push(synonym);
-            break;
-          }
-        }
-        else if (word.toLowerCase() != element.toLowerCase() && index === filteredLyrics.length - 1)
-        {
-          synonymizedLyrics.push(word);
-        }
+
+  static async buildSynMap(response) {
+    let toSynonymize = await PartsOfSpeech.filterAsArray(response.lyrics);
+    let synonymMap = new Map();
+
+    for (let i = 0; i < toSynonymize.length; i++) {
+      const response = await ThesaurusAPI.get(toSynonymize[i]);
+      if (response.hasOwnProperty(`synonyms`)) {
+        synonymMap.set(toSynonymize[i], response.synonyms[0]);
+      } else {
+        console.error(response);
       }
     }
-    return synonymizedLyrics.join(' ').replaceAll(' ,', ',').replaceAll(' \n ', '\n');
+
+    return synonymMap;
+  }
+
+  static replaceFromMap(text, map) {
+    // match every key from the map (regexps are insane)
+    const pattern = new RegExp(`\\b(${[...map.keys()].join('|')})\\b`, 'gi');
+
+    return text.replace(pattern, (match) => {
+      // get the replacement text
+      const replacement = map.get(match.toLowerCase()); 
+
+      // match case
+      if (match[0] === match[0].toUpperCase()) {
+
+      return replacement.charAt(0).toUpperCase() + replacement.slice(1);
+      } else {
+      
+      // use the replacement as is for lowercase matches
+      return replacement;
+      }
+    });
+  }
+
+  static async synonymize(response) {
+    const map = await this.buildSynMap(response);
+
+    if (map) {
+      return this.replaceFromMap(response.lyrics, map);
+    }
   }
 }
