@@ -2,6 +2,10 @@ import { thesaurus } from "thesaurus-js"
 
 export default class ThesaurusAPI {
 
+  static filterSynonyms(array) {
+    const newArray = array.filter(word => word !== `Collocations` && word.split(' ').length <= 3);
+  }
+
   static shuffle(array) {
     let oldElement;
     for (let i = array.length - 1; i > 0; i--) {
@@ -15,7 +19,7 @@ export default class ThesaurusAPI {
   
   static async get(wordInput) {
     try {
-      let response = await thesaurus(wordInput, `en`, [`reverso`]);
+      let response = await thesaurus(wordInput, `en`, [`wordreference`]);
       
       if (!response) {
         throw new Error(`the API gave no response`);
@@ -24,7 +28,7 @@ export default class ThesaurusAPI {
         throw new Error(`'${wordInput}' has no synonyms`);
       }
 
-      response[0].synonyms = this.shuffle(response[0].synonyms);
+      response[0].synonyms = this.shuffle(response[0].synonyms.filter(word => word !== `Collocations`));
 
       return response[0];
 
