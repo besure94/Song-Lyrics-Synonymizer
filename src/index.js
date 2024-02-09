@@ -32,6 +32,7 @@ function displaySynonymizedLyrics(synonymizedLyrics) {
   displayLyrics.innerText = synonymizedLyrics;
   displayLyricsDiv.appendChild(displayLyrics);
   document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyricsDiv);
+  document.querySelector("div#arrow").removeAttribute("class");
 }
 
 

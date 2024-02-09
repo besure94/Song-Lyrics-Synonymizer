@@ -42,8 +42,13 @@ export default class Synonymizer {
           }
           else {
             const synonyms = await ThesaurusAPI.get(word);
-            synonymMap.set(word, synonyms.synonyms[0]);
+            if (!synonyms) {
+              synonymizedLyrics.push(word);
+              break;
+            }
             let synonym = synonyms.synonyms[0];
+            synonymMap.set(word, synonym);
+            
             if (word.charAt(0) === word.charAt(0).toUpperCase()) {
               synonym = synonym.slice(0, 1).toUpperCase() + synonym.slice(1, synonym.length);
             }

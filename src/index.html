@@ -5,8 +5,8 @@
   </head>
     <body>
       <div class="container">
-        <row class="row">
-          <col class="col">
+        <div class="row">
+          <div class="col">
             <h1>Song Lyrics Synonymizer</h1>
             <p>Search for a song to get the lyrics.</p>
             <form id="searchSong">
@@ -20,13 +20,16 @@
         </div>
       </div>
       <div class="container">
-        <div class="row">
-          <div class="col">
+        <div class="row align-items-center">
+          <div class="col-5">
             <div id="lyricsDiv"></div>
             <div id="showSpeechButton"></div>
             <div id="showSynonymizeButton"></div>
           </div>
-          <div class="col">
+          <div class="col-2">
+            <div id="arrow" style="font-size:xx-large;" class="hidden">=></div>
+          </div>
+          <div class="col-5">
             <div id="synonymizedLyricsDiv"></div>
           </div>
         </div>
