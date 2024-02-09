@@ -27,6 +27,7 @@ async function displaySynonymizedLyrics(lyrics) {
   displayLyrics.innerText = synonymizedLyrics;
   displayLyricsDiv.appendChild(displayLyrics);
   document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyricsDiv);
+  document.querySelector("div#arrow").removeAttribute("class");
 }
 
 window.addEventListener("load", function (event) {
