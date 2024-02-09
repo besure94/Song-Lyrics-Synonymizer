@@ -53,13 +53,8 @@ window.addEventListener("load", function (event) {
     let artistData = document.getElementById("artist").value;
     console.log(artistData, "Artist Data");
     getLyrics(titleData, artistData).then(function (lyricsResponse) {
-      // document.querySelector("div#showButtons").innerText = "";
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
-      let speakButton = document.createElement("button");
-      // speakButton.textContent = "Speak!";
-      // speakButton.setAttribute("id", "textToSpeech");
-      // document.querySelector("div#showSpeechButton").appendChild(speakButton);
       let button = document.createElement("button");
       let button2 = document.createElement("button");
       button.textContent = "Speak!";
@@ -91,28 +86,6 @@ window.addEventListener("load", function (event) {
         evt.preventDefault();
         displaySynonymizedLyrics(lyricsStorage.lyricsApiResponse);
       });
-      // });
     });
   });
 });
-
-// speakButton.addEventListener("click", function () {
-        // let button = document.createElement("button");
-        // let button2 = document.createElement("button");
-        // button.textContent = "Speak!";
-        // button.setAttribute("id", "textToSpeech");
-        // document.querySelector("div#showSpeechButton").appendChild(button);
-        // button2.textContent = "Synonymize!";
-        // button2.setAttribute("id", "synonymize");
-        // document.querySelector("div#showSpeechButton").appendChild(button2);
-        // button.addEventListener("click", function (evt) {
-        //   evt.preventDefault();
-        // let lyrics = new SpeechSynthesisUtterance();
-        // let voices = window.speechSynthesis.getVoices();
-        // lyrics.voice = voices[2];
-        // lyrics.volume = 1;
-        // lyrics.rate = 1.5;
-        // lyrics.pitch = 1;
-        // lyrics.text = lyricsStorage.lyricsApiResponse;
-        // window.speechSynthesis.speak(lyrics);
-
