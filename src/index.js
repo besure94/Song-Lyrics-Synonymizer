@@ -57,7 +57,6 @@ window.addEventListener("load", function (event) {
     e.preventDefault();
     let titleData = document.getElementById("song").value;
     let artistData = document.getElementById("artist").value;
-    console.log(artistData, "Artist Data");
 
     getLyrics(titleData, artistData).then(function (lyricsResponse) {
       lyricsStorage.lyricsApiResponse = lyricsResponse;
