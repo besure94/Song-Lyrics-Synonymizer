@@ -15,7 +15,7 @@ export default class PartsOfSpeech {
     let filteredMap = await this.getPos(string);
     for (const key of filteredMap.keys()) {
       // remove unwanted entries in the pos map. See bottom
-      if(!/^([JMNU]\w(?!P)|V|RB)\w*/.test(key)) {
+      if(!/^([JMNU]\w[^P]|V|RB)\w*/.test(key)) {
         filteredMap.delete(key);
       } else {
         // filter out contractions

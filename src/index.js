@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import LyricsService from './js/LyricsService.js';
 import LyricsDumpStorage from './js/LyricsDumpStorage.js';
-import Synonymizer from './js/Synonymizer.js';
+import Synonymizer from './js/synonymizer.js';
 
 async function getLyrics(title, artist) {
   let response = await LyricsService.getData(title, artist);
