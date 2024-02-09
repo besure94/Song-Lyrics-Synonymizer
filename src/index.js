@@ -11,6 +11,12 @@ async function getLyrics(title, artist) {
   return returnLyrics;
 }
 
+async function getSynonymizedLyrics(lyrics) {
+  const synonymizedLyrics = await Synonymizer.synonymize(lyrics);
+  let returnSynonymizedLyrics = synonymizedLyrics;
+  return returnSynonymizedLyrics;
+}
+
 function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").innerText = "";
   let displayLyricsDiv = document.createElement("div");
@@ -19,6 +25,16 @@ function displaySongLyrics(response) {
   displayLyricsDiv.appendChild(displayLyrics);
   document.querySelector("div#lyricsDiv").appendChild(displayLyricsDiv);
 }
+
+function displaySynonymizedLyrics(synonymizedLyrics) {
+  const displayLyricsDiv = document.createElement("div");
+  const displayLyrics = document.createElement("p");
+  displayLyrics.innerText = synonymizedLyrics;
+  displayLyricsDiv.appendChild(displayLyrics);
+  document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyricsDiv);
+}
+
+
 
 // TODO Add most tts functionality to sti own function.
 function textToSpeech(lyricsToSpeak) {
@@ -34,35 +50,29 @@ function textToSpeech(lyricsToSpeak) {
   return speechSynth;
 }
 
-async function displaySynonymizedLyrics(lyrics) {
-  const synonymizedLyrics = await Synonymizer.synonymize(lyrics);
-  const displayLyricsDiv = document.createElement("div");
-  const displayLyrics = document.createElement("p");
-  displayLyrics.innerText = synonymizedLyrics;
-  displayLyricsDiv.appendChild(displayLyrics);
-  document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyricsDiv);
-}
-
 window.addEventListener("load", function (event) {
   event.preventDefault();
   const lyricsStorage = new LyricsDumpStorage();
   document.querySelector("form#searchSong").addEventListener("submit", function (e) {
     e.preventDefault();
-
     let titleData = document.getElementById("song").value;
     let artistData = document.getElementById("artist").value;
     console.log(artistData, "Artist Data");
+
     getLyrics(titleData, artistData).then(function (lyricsResponse) {
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
+
       let button = document.createElement("button");
       let button2 = document.createElement("button");
       button.textContent = "Speak!";
       button.setAttribute("id", "textToSpeech");
       document.querySelector("div#showSpeechButton").appendChild(button);
+
       button2.textContent = "Synonymize!";
       button2.setAttribute("id", "synonymize");
       document.querySelector("div#showSpeechButton").appendChild(button2);
+
       button.addEventListener("click", function (evt) {
         evt.preventDefault();
         textToSpeech(lyricsStorage.lyricsApiResponse);
@@ -82,9 +92,13 @@ window.addEventListener("load", function (event) {
           }
         });
       });
+
       button2.addEventListener("click", function (evt) {
-        evt.preventDefault();
-        displaySynonymizedLyrics(lyricsStorage.lyricsApiResponse);
+        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
+          evt.preventDefault();
+          lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
+          displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
+        });
       });
     });
   });
