@@ -83,13 +83,17 @@ window.addEventListener("load", function (event) {
           }
         });
       });
-      
       synonymizerButton.addEventListener("click", function (evt) {
         getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
           evt.preventDefault();
           lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
           displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
         });
+      });
+      
+      // Prevents text to speech from continually play outside of website.
+      window.addEventListener("beforeunload", function () {
+        window.speechSynthesis.cancel();
       });
     });
   });
