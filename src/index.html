@@ -5,34 +5,26 @@
   </head>
     <body>
       <div class="container">
-        <div class="row">
-          <div class="col">
-            <h1>Song Lyrics Synonymizer</h1>
-            <p>Search for a song to get the lyrics.</p>
-            <form id="searchSong">
-              <input id="song" class="form-control" type="text" placeholder="Enter a song title" name="song" class="" required>
-              <br>
-              <input id="artist" class="form-control" type="text" placeholder="Enter an artist name" name="artist">
-              <br>
-              <button type="submit" id="search" class="btn btn-primary">Go!</button>
-            </form>
-            <button id="synonymize" class="hidden">
+        <h1>Song Lyrics Synonymizer</h1>
+        <p>Search for a song to get the lyrics.</p>
+        <form id="searchSong" class="my-2">
+          <input id="song" class="form-control" type="text" placeholder="Enter a song title" name="song" class="" required>
+          <br>
+          <input id="artist" class="form-control" type="text" placeholder="Enter an artist name" name="artist">
+          <br>
+          <button type="submit" id="search" class="btn btn-primary">Go!</button>
+          <button type="button" id="synonymize" class="hidden btn btn-primary">Synonymize</button>
+          <div id="text-to-speech-control-buttons" class="hidden btn-group float-end">
+            <button id="play-button" type="button" class="btn btn-outline-success">Play</button>
+            <button id="pause-resume-button" type="button" class="btn btn-outline-warning">Pause</button>
           </div>
-        </div>
-      </div>
-      <div id="text-to-speech-control-buttons" class="hidden">
-        <button id="play-button">
-        <button id="pause-resume-button">
-      </div>
-      <div class="container">
-        <div class="row align-items-center">
+        </form>
+        <div class="row">
           <div class="col-5">
             <div id="lyricsDiv"></div>
-            <div id="showSpeechButton"></div>
-            <div id="showSynonymizeButton"></div>
           </div>
           <div class="col-2">
-            <div id="arrow" style="font-size:xx-large;" class="hidden">=></div>
+            <div id="arrow" style="font-size:xx-large;" class="hidden">==></div>
           </div>
           <div class="col-5">
             <div id="synonymizedLyricsDiv"></div>
