@@ -13,7 +13,7 @@
           <input id="artist" class="form-control" type="text" placeholder="Enter an artist name" name="artist">
           <br>
           <button type="submit" id="search" class="btn btn-primary">Go!</button>
-          <button type="button" id="synonymize" class="hidden btn btn-primary">Synonymize</button>
+          <button type="button" id="synonymize" class="hidden btn btn-secondary">Synonymize</button>
           <div id="text-to-speech-control-buttons" class="hidden btn-group float-end">
             <button id="play-button" type="button" class="btn btn-outline-success">Play</button>
             <button id="pause-resume-button" type="button" class="btn btn-outline-warning">Pause</button>
@@ -21,13 +21,19 @@
         </form>
         <div class="row">
           <div class="col-5">
-            <div id="lyricsDiv"></div>
+            <div class="card text-bg-light border-info">
+              <div id="lyricsDiv" class="card-body"></div>
+            </div>
           </div>
           <div class="col-2">
-            <div id="arrow" style="font-size:xx-large;" class="hidden">==></div>
+            <div id="arrow" class="hidden">
+              <h2 class="text-center"> ==></h2>
+            </div>
           </div>
           <div class="col-5">
-            <div id="synonymizedLyricsDiv"></div>
+            <div class="card text-bg-light border-danger">
+              <div id="synonymizedLyricsDiv" class="card-body"></div>
+            </div>
           </div>
         </div>
       </div>
