@@ -63,14 +63,22 @@ window.addEventListener("load", function (event) {
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
       const txtToSpeechControlDiv = document.getElementById("text-to-speech-control-buttons");
-      txtToSpeechControlDiv.classList.remove("hidden");
       const synonymizerButton = document.getElementById("synonymize");
       synonymizerButton.classList.remove("hidden");
+
+      synonymizerButton.addEventListener("click", function (evt) {
+        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
+          evt.preventDefault();
+          txtToSpeechControlDiv.classList.remove("hidden");
+          lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
+          displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
+        });
+      });
       
       const playButton = document.getElementById("play-button");
       playButton.addEventListener("click", function (evt) {
         evt.preventDefault();
-        textToSpeech(lyricsStorage.lyricsApiResponse);
+        textToSpeech(lyricsStorage.synonymizedLyricsApiResponse);
 
         const pauseResumeButton = document.getElementById("pause-resume-button");
         pauseResumeButton.addEventListener("click", function () {
@@ -81,13 +89,6 @@ window.addEventListener("load", function (event) {
             pauseResumeButton.value = 1;
             window.speechSynthesis.resume();
           }
-        });
-      });
-      synonymizerButton.addEventListener("click", function (evt) {
-        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
-          evt.preventDefault();
-          lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
-          displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
         });
       });
       
