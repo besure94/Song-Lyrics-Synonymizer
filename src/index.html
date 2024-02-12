@@ -8,18 +8,20 @@
         <h1>Song Lyrics Synonymizer</h1>
         <p>Search for a song to get the lyrics.</p>
         <form id="searchSong" class="my-2">
-          <input id="song" class="form-control" type="text" placeholder="Enter a song title" name="song" class="" required>
-          <br>
-          <input id="artist" class="form-control" type="text" placeholder="Enter an artist name" name="artist">
-          <br>
+          <div class="mb-2">
+            <input id="song" class="form-control" type="text" placeholder="Enter a song title" name="song" required>
+          </div>
+          <div class="mb-2">
+            <input id="artist" class="form-control" type="text" placeholder="Enter an artist name" name="artist">
+          </div>
           <button type="submit" id="search" class="btn btn-primary">Go!</button>
-          <button type="button" id="synonymize" class="hidden btn btn-secondary">Synonymize</button>
+          <button type="button" id="synonymize" class="hidden btn btn-light border-primary text-primary">Synonymize</button>
           <div id="text-to-speech-control-buttons" class="hidden btn-group float-end">
             <button id="play-button" type="button" class="btn btn-outline-success">Play</button>
             <button id="pause-resume-button" type="button" class="btn btn-outline-warning">Pause</button>
           </div>
         </form>
-        <div class="row">
+        <div class="row my-2">
           <div class="col-5">
             <div class="card text-bg-light border-info">
               <div id="lyricsDiv" class="card-body"></div>
