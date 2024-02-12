@@ -83,12 +83,21 @@ window.addEventListener("load", function (event) {
           }
         });
       });
+
       synonymizerButton.addEventListener("click", function (evt) {
-        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
-          evt.preventDefault();
-          lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
-          displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
-        });
+        const button = document.querySelector("#synonymize");
+        button.setAttribute("disabled", "true");
+        button.textContent = "Working...";
+        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse)
+          .then(function (synonymizedLyricsResponse) {
+            evt.preventDefault();
+            lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse;
+            displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
+          })
+          .then(function() {
+            button.removeAttribute("disabled");
+            button.textContent = "Synonymize!"
+          });
       });
       
       // Prevents text to speech from continually play outside of website.
