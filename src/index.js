@@ -67,12 +67,20 @@ window.addEventListener("load", function (event) {
       synonymizerButton.classList.remove("hidden");
 
       synonymizerButton.addEventListener("click", function (evt) {
-        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
-          evt.preventDefault();
-          txtToSpeechControlDiv.classList.remove("hidden");
-          lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
-          displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
-        });
+        const button = document.querySelector("#synonymize");
+        txtToSpeechControlDiv.classList.remove("hidden");
+        button.setAttribute("disabled", "true");
+        button.textContent = "Working...";
+        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse)
+          .then(function (synonymizedLyricsResponse) {
+            evt.preventDefault();
+            lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse;
+            displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
+          })
+          .then(function() {
+            button.removeAttribute("disabled");
+            button.textContent = "Synonymize!"
+          });
       });
       
       const playButton = document.getElementById("play-button");
