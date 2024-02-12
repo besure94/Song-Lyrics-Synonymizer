@@ -84,7 +84,7 @@ window.addEventListener("load", function (event) {
         });
       });
 
-      button2.addEventListener("click", function (evt) {
+      synonymizerButton.addEventListener("click", function (evt) {
         const button = document.querySelector("#synonymize");
         button.setAttribute("disabled", "true");
         button.textContent = "Working...";
