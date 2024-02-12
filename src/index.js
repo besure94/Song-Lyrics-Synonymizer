@@ -62,26 +62,17 @@ window.addEventListener("load", function (event) {
     getLyrics(titleData, artistData).then(function (lyricsResponse) {
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
-
-      let button = document.createElement("button");
-      let button2 = document.createElement("button");
-      button.textContent = "Speak!";
-      button.setAttribute("id", "textToSpeech");
-      document.querySelector("div#showSpeechButton").appendChild(button);
-
-      button2.textContent = "Synonymize!";
-      button2.setAttribute("id", "synonymize");
-      document.querySelector("div#showSpeechButton").appendChild(button2);
-
-      button.addEventListener("click", function (evt) {
+      const txtToSpeechControlDiv = document.getElementById("text-to-speech-control-buttons");
+      txtToSpeechControlDiv.classList.remove("hidden");
+      const synonymizerButton = document.getElementById("synonymize");
+      synonymizerButton.classList.remove("hidden");
+      
+      const playButton = document.getElementById("play-button");
+      playButton.addEventListener("click", function (evt) {
         evt.preventDefault();
         textToSpeech(lyricsStorage.lyricsApiResponse);
 
-        let pauseResumeButton = document.createElement("button");
-        pauseResumeButton.textContent = "Pause!";
-        pauseResumeButton.setAttribute("id", "pauseResumeButton");
-        document.getElementById("showSpeechButton").appendChild(pauseResumeButton);
-
+        const pauseResumeButton = document.getElementById("pause-resume-button");
         pauseResumeButton.addEventListener("click", function () {
           if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
             pauseResumeButton.value = 2;
@@ -92,13 +83,17 @@ window.addEventListener("load", function (event) {
           }
         });
       });
-
-      button2.addEventListener("click", function (evt) {
+      synonymizerButton.addEventListener("click", function (evt) {
         getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
           evt.preventDefault();
           lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
           displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
         });
+      });
+      
+      // Prevents text to speech from continually play outside of website.
+      window.addEventListener("beforeunload", function () {
+        window.speechSynthesis.cancel();
       });
     });
   });
