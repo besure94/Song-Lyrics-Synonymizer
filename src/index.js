@@ -19,19 +19,16 @@ async function getSynonymizedLyrics(lyrics) {
 
 function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").innerText = "";
-  let displayLyricsDiv = document.createElement("div");
-  let displayLyrics = document.createElement("p");
+  const displayLyrics = document.createElement("p");
   displayLyrics.innerText = response;
-  displayLyricsDiv.appendChild(displayLyrics);
-  document.querySelector("div#lyricsDiv").appendChild(displayLyricsDiv);
+  document.querySelector("div#lyricsDiv").appendChild(displayLyrics);
 }
 
 function displaySynonymizedLyrics(synonymizedLyrics) {
-  const displayLyricsDiv = document.createElement("div");
+  document.querySelector("div#synonymizedLyricsDiv").innerText = "";
   const displayLyrics = document.createElement("p");
   displayLyrics.innerText = synonymizedLyrics;
-  displayLyricsDiv.appendChild(displayLyrics);
-  document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyricsDiv);
+  document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyrics);
   document.querySelector("div#arrow").removeAttribute("class");
 }
 
