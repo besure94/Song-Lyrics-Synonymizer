@@ -19,6 +19,9 @@ async function getSynonymizedLyrics(lyrics) {
 
 function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").innerText = "";
+  document.querySelector("div#synonymizedLyricsDiv").innerText = "";
+  document.querySelector("div#synonymizedLyricsCard").setAttribute("class", "hidden");
+  document.querySelector("div#arrow").setAttribute("class", "hidden");
   document.querySelector("div#lyricsCard").setAttribute("class", "card text-bg-light border-info");
   const displayLyrics = document.createElement("p");
   displayLyrics.innerText = response;
