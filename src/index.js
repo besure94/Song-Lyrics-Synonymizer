@@ -60,29 +60,12 @@ window.addEventListener("load", function (event) {
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
       const txtToSpeechControlDiv = document.getElementById("text-to-speech-control-buttons");
-      txtToSpeechControlDiv.classList.remove("hidden");
       const synonymizerButton = document.getElementById("synonymize");
       synonymizerButton.classList.remove("hidden");
-      
-      const playButton = document.getElementById("play-button");
-      playButton.addEventListener("click", function (evt) {
-        evt.preventDefault();
-        textToSpeech(lyricsStorage.lyricsApiResponse);
-
-        const pauseResumeButton = document.getElementById("pause-resume-button");
-        pauseResumeButton.addEventListener("click", function () {
-          if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
-            pauseResumeButton.value = 2;
-            window.speechSynthesis.pause();
-          } else if (pauseResumeButton.value == 2) {
-            pauseResumeButton.value = 1;
-            window.speechSynthesis.resume();
-          }
-        });
-      });
 
       synonymizerButton.addEventListener("click", function (evt) {
         const button = document.querySelector("#synonymize");
+        txtToSpeechControlDiv.classList.remove("hidden");
         button.setAttribute("disabled", "true");
         button.textContent = "Working...";
         getSynonymizedLyrics(lyricsStorage.lyricsApiResponse)
@@ -95,6 +78,23 @@ window.addEventListener("load", function (event) {
             button.removeAttribute("disabled");
             button.textContent = "Synonymize!"
           });
+      });
+      
+      const playButton = document.getElementById("play-button");
+      playButton.addEventListener("click", function (evt) {
+        evt.preventDefault();
+        textToSpeech(lyricsStorage.synonymizedLyricsApiResponse);
+
+        const pauseResumeButton = document.getElementById("pause-resume-button");
+        pauseResumeButton.addEventListener("click", function () {
+          if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
+            pauseResumeButton.value = 2;
+            window.speechSynthesis.pause();
+          } else if (pauseResumeButton.value == 2) {
+            pauseResumeButton.value = 1;
+            window.speechSynthesis.resume();
+          }
+        });
       });
       
       // Prevents text to speech from continually play outside of website.
