@@ -66,31 +66,6 @@ window.addEventListener("load", function (event) {
       synonymizerButton.classList.remove("hidden");
 
       synonymizerButton.addEventListener("click", function (evt) {
-<<<<<<< HEAD
-        getSynonymizedLyrics(lyricsStorage.lyricsApiResponse).then(function (synonymizedLyricsResponse) {
-          evt.preventDefault();
-          txtToSpeechControlDiv.classList.remove("hidden");
-          lyricsStorage.synonymizedLyricsApiResponse = synonymizedLyricsResponse
-          displaySynonymizedLyrics(lyricsStorage.synonymizedLyricsApiResponse);
-        });
-      });
-      
-      const playButton = document.getElementById("play-button");
-      playButton.addEventListener("click", function (evt) {
-        evt.preventDefault();
-        textToSpeech(lyricsStorage.synonymizedLyricsApiResponse);
-
-        const pauseResumeButton = document.getElementById("pause-resume-button");
-        pauseResumeButton.addEventListener("click", function () {
-          if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
-            pauseResumeButton.value = 2;
-            window.speechSynthesis.pause();
-          } else if (pauseResumeButton.value == 2) {
-            pauseResumeButton.value = 1;
-            window.speechSynthesis.resume();
-          }
-        });
-=======
         const button = document.querySelector("#synonymize");
         txtToSpeechControlDiv.classList.remove("hidden");
         button.setAttribute("disabled", "true");
@@ -105,7 +80,6 @@ window.addEventListener("load", function (event) {
             button.removeAttribute("disabled");
             button.textContent = "Synonymize!"
           });
->>>>>>> b207d5109e37cea260456a29ae340ee4bc8675d3
       });
       
       const playButton = document.getElementById("play-button");
