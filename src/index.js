@@ -19,6 +19,7 @@ async function getSynonymizedLyrics(lyrics) {
 
 function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").innerText = "";
+  document.querySelector("div#lyricsCard").setAttribute("class", "card text-bg-light border-info");
   const displayLyrics = document.createElement("p");
   displayLyrics.innerText = response;
   document.querySelector("div#lyricsDiv").appendChild(displayLyrics);
@@ -26,6 +27,7 @@ function displaySongLyrics(response) {
 
 function displaySynonymizedLyrics(synonymizedLyrics) {
   document.querySelector("div#synonymizedLyricsDiv").innerText = "";
+  document.querySelector("div#synonymizedLyricsCard").setAttribute("class", "card text-bg-light border-danger");
   const displayLyrics = document.createElement("p");
   displayLyrics.innerText = synonymizedLyrics;
   document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyrics);
