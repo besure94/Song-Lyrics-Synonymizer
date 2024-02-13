@@ -76,24 +76,6 @@ window.addEventListener("load", function (event) {
       const synonymizerButton = document.getElementById("synonymize");
       synonymizerButton.classList.remove("hidden");
       
-      const playButton = document.getElementById("play-button");
-      playButton.addEventListener("click", function (evt) {
-        evt.preventDefault();
-        textToSpeech(lyricsStorage.lyricsApiResponse);
-
-        // text to speech pause and resume button - if pauseResumeButton value is 1, it switches to 2 and pauses, then resumes if button is pressed again
-        const pauseResumeButton = document.getElementById("pause-resume-button");
-        pauseResumeButton.addEventListener("click", function () {
-          if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
-            pauseResumeButton.value = 2;
-            window.speechSynthesis.pause();
-          } else if (pauseResumeButton.value == 2) {
-            pauseResumeButton.value = 1;
-            window.speechSynthesis.resume();
-          }
-        });
-      });
-
       synonymizerButton.addEventListener("click", function (evt) {
         const button = document.querySelector("#synonymize");
         txtToSpeechControlDiv.classList.remove("hidden");
@@ -111,6 +93,24 @@ window.addEventListener("load", function (event) {
             button.removeAttribute("disabled");
             button.textContent = "Synonymize!"
           });
+      });
+
+      const playButton = document.getElementById("play-button");
+      playButton.addEventListener("click", function (evt) {
+        evt.preventDefault();
+        textToSpeech(lyricsStorage.synonymizedLyricsApiResponse);
+
+        // text to speech pause and resume button - if pauseResumeButton value is 1, it switches to 2 and pauses, then resumes if button is pressed again
+        const pauseResumeButton = document.getElementById("pause-resume-button");
+        pauseResumeButton.addEventListener("click", function () {
+          if (pauseResumeButton.value == 1 || pauseResumeButton.value == "") {
+            pauseResumeButton.value = 2;
+            window.speechSynthesis.pause();
+          } else if (pauseResumeButton.value == 2) {
+            pauseResumeButton.value = 1;
+            window.speechSynthesis.resume();
+          }
+        });
       });
       
       // Prevents text to speech from playing outside of website.
