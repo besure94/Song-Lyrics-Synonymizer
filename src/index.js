@@ -24,20 +24,19 @@ async function getSynonymizedLyrics(lyrics) {
 // displays the song lyrics from the original song
 function displaySongLyrics(response) {
   document.querySelector("div#lyricsDiv").innerText = "";
-  let displayLyricsDiv = document.createElement("div");
-  let displayLyrics = document.createElement("p");
+  document.querySelector("div#lyricsCard").setAttribute("class", "card text-bg-light border-info");
+  const displayLyrics = document.createElement("p");
   displayLyrics.innerText = response;
-  displayLyricsDiv.appendChild(displayLyrics);
-  document.querySelector("div#lyricsDiv").appendChild(displayLyricsDiv);
+  document.querySelector("div#lyricsDiv").appendChild(displayLyrics);
 }
 
 // displays the synonymized lyrics, aka the new lyrics
 function displaySynonymizedLyrics(synonymizedLyrics) {
-  const displayLyricsDiv = document.createElement("div");
+  document.querySelector("div#synonymizedLyricsDiv").innerText = "";
+  document.querySelector("div#synonymizedLyricsCard").setAttribute("class", "card text-bg-light border-danger");
   const displayLyrics = document.createElement("p");
   displayLyrics.innerText = synonymizedLyrics;
-  displayLyricsDiv.appendChild(displayLyrics);
-  document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyricsDiv);
+  document.querySelector("div#synonymizedLyricsDiv").appendChild(displayLyrics);
   document.querySelector("div#arrow").removeAttribute("class");
 }
 
@@ -71,7 +70,6 @@ window.addEventListener("load", function (event) {
       lyricsStorage.lyricsApiResponse = lyricsResponse;
       displaySongLyrics(lyricsStorage.lyricsApiResponse);
       const txtToSpeechControlDiv = document.getElementById("text-to-speech-control-buttons");
-      txtToSpeechControlDiv.classList.remove("hidden");
       const synonymizerButton = document.getElementById("synonymize");
       synonymizerButton.classList.remove("hidden");
       
@@ -95,6 +93,7 @@ window.addEventListener("load", function (event) {
 
       synonymizerButton.addEventListener("click", function (evt) {
         const button = document.querySelector("#synonymize");
+        txtToSpeechControlDiv.classList.remove("hidden");
         button.setAttribute("disabled", "true");
         button.textContent = "Working...";
         // calls getSynonymizedLyrics then waits for response

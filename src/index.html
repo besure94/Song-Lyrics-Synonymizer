@@ -5,37 +5,37 @@
   </head>
     <body>
       <div class="container">
-        <div class="row">
-          <div class="col">
-            <h1>Song Lyrics Synonymizer</h1>
-            <p>Search for a song to get the lyrics.</p>
-            <form id="searchSong">
-              <input id="song" class="form-control" type="text" placeholder="Enter a song title" name="song" class="" required>
-              <br>
-              <input id="artist" class="form-control" type="text" placeholder="Enter an artist name" name="artist">
-              <br>
-              <button type="submit" id="search" class="btn btn-primary">Go!</button>
-            </form>
-            <button id="synonymize" class="hidden">
+        <h1>Song Lyrics Synonymizer</h1>
+        <p>Search for a song to get the lyrics.</p>
+        <form id="searchSong" class="my-2">
+          <div class="mb-2">
+            <input id="song" class="form-control" type="text" placeholder="Enter a song title" name="song" required>
           </div>
-        </div>
-      </div>
-      <div id="text-to-speech-control-buttons" class="hidden">
-        <button id="play-button">
-        <button id="pause-resume-button">
-      </div>
-      <div class="container">
-        <div class="row align-items-center">
+          <div class="mb-2">
+            <input id="artist" class="form-control" type="text" placeholder="Enter an artist name" name="artist">
+          </div>
+          <button type="submit" id="search" class="btn btn-primary">Go!</button>
+          <button type="button" id="synonymize" class="hidden btn btn-light border-primary text-primary">Synonymize</button>
+          <div id="text-to-speech-control-buttons" class="hidden btn-group float-end">
+            <button id="play-button" type="button" class="btn btn-outline-success">Play</button>
+            <button id="pause-resume-button" type="button" class="btn btn-outline-warning">Pause</button>
+          </div>
+        </form>
+        <div class="row my-2">
           <div class="col-5">
-            <div id="lyricsDiv"></div>
-            <div id="showSpeechButton"></div>
-            <div id="showSynonymizeButton"></div>
+            <div id="lyricsCard" class="card text-bg-light border-info hidden">
+              <div id="lyricsDiv" class="card-body"></div>
+            </div>
           </div>
           <div class="col-2">
-            <div id="arrow" style="font-size:xx-large;" class="hidden">=></div>
+            <div id="arrow" class="hidden">
+              <h2 class="text-center"> ==></h2>
+            </div>
           </div>
           <div class="col-5">
-            <div id="synonymizedLyricsDiv"></div>
+            <div id="synonymizedLyricsCard" class="card text-bg-light border-danger hidden">
+              <div id="synonymizedLyricsDiv" class="card-body"></div>
+            </div>
           </div>
         </div>
       </div>

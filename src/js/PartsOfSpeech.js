@@ -3,10 +3,12 @@ import Compendium from 'compendium-js'
 export default class PartsOfSpeech {
 
   static preFilter(string) {
-    // cut out [Verse] etc
-    let newString = string.replaceAll(/\[.*\]\n/g, ``);
     // space linebreak characters ('you \n How' instead of 'you\nHow')
-    newString = newString.replaceAll(`\n`,` \n `);
+    let newString = string.replaceAll(`\n`,` \n `);
+    // cut out [Verse] etc
+    newString = newString.replace(/\[.*\]/g, ``);
+    // normalize whitespaces
+    newString = newString.replace(/\s/g, ` `);
 
     return newString;
   }
