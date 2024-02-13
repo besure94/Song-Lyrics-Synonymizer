@@ -31,7 +31,11 @@ This application uses the [lyrist](https://lyrist.vercel.app/), [Compendium JS](
 
 ## Known Bugs
 
-The "artist" search feature does not work for artists whose name contains special characters.
+* The "artist" search feature does not work for artists whose name contains special characters.
+* Application returns "undefined" if it doesn't find any lyrics to display.
+* If application returns "undefined", clicking "Synonymize!" will break the application.
+* Application doesn't always return the correct lyrics.
+* Application doesn't always make accurate distinction between inputs for ""artist" and "title". 
 
 ## License
 
