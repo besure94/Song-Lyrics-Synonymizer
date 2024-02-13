@@ -3,10 +3,12 @@ import Compendium from 'compendium-js'
 export default class PartsOfSpeech {
 
   static preFilter(string) {
-    // cut out [Verse] etc
-    let newString = string.replaceAll(/\[.*\]\n/g, ``);
     // space linebreak characters ('you \n How' instead of 'you\nHow')
-    newString = newString.replaceAll(`\n`,` \n `);
+    let newString = string.replaceAll(`\n`,` \n `);
+    // cut out [Verse] etc
+    newString = newString.replace(/\[.*\]/g, ``);
+    // normalize whitespaces
+    newString = newString.replace(/\s/g, ` `);
 
     return newString;
   }
@@ -15,7 +17,7 @@ export default class PartsOfSpeech {
     let filteredMap = await this.getPos(string);
     for (const key of filteredMap.keys()) {
       // remove unwanted entries in the pos map. See bottom
-      if(!/^([JMNU]\w[^P]|V|RB)\w*/.test(key)) {
+      if(!/^([JMNU]\w(?!P)|V|RB)\w*/.test(key)) {
         filteredMap.delete(key);
       } else {
         // filter out contractions
