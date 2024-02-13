@@ -9,7 +9,9 @@ export default class Synonymizer {
     const synonymizedLyrics = [];
     let skip = 0;
     const synonymMap = new Map();
+    // loop through lyrics
     for (const word of lyricsArray) {
+      // skip content in brackets
       if (skip === 1) {
         synonymizedLyrics.push(word);
         if (!word.endsWith(']')) {
@@ -29,8 +31,10 @@ export default class Synonymizer {
         skip = 1;
         continue;
       }
+      // search for lyric in array of lyrics to be synonymized
       for (let index = 0; index < filteredLyrics.length; index++) {
         const element = filteredLyrics[index];
+        // on match, replace lyric with synonym
         if (word.toLowerCase() === element.toLowerCase()) {
           if (synonymMap.has(word)) {
             let synonym = synonymMap.get(word);
@@ -56,6 +60,7 @@ export default class Synonymizer {
             break;
           }
         }
+        // add unchanged lyric if no matches found
         else if (word.toLowerCase() != element.toLowerCase() && index === filteredLyrics.length - 1)
         {
           synonymizedLyrics.push(word);
