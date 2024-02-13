@@ -8,14 +8,13 @@ import Synonymizer from './js/synonymizer.js';
 // this function awaits the getData() function from the LyricsService.js file
 async function getLyrics(title, artist) {
   let response = await LyricsService.getData(title, artist);
-  // stores the lyrics retrieved from the Lyrist API call in a variable, and returns the variable
-  let returnLyrics = response.lyrics;
-  return returnLyrics;
+  // stores the response retrieved from the Lyrist API call in a variable, and returns the variable
+  return response;
 }
 
 // this function awaits the synonymize() function from the Synonymizer.js file
-async function getSynonymizedLyrics(lyrics) {
-  const synonymizedLyrics = await Synonymizer.synonymize(lyrics);
+async function getSynonymizedLyrics(response) {
+  const synonymizedLyrics = await Synonymizer.synonymize(response.lyrics);
   // stores the synonymized lyrics resulting from the Thesaurus and Compendium APIs in a variable, and returns the variable
   let returnSynonymizedLyrics = synonymizedLyrics;
   return returnSynonymizedLyrics;
@@ -29,7 +28,7 @@ function displaySongLyrics(response) {
   document.querySelector("div#arrow").setAttribute("class", "hidden");
   document.querySelector("div#lyricsCard").setAttribute("class", "card text-bg-light border-info");
   const displayLyrics = document.createElement("p");
-  displayLyrics.innerText = response;
+  displayLyrics.innerText = `Song: ${response.title} \n Artist: ${response.artist} \n\n ${response.lyrics}`;
   document.querySelector("div#lyricsDiv").appendChild(displayLyrics);
 }
 
@@ -79,7 +78,7 @@ window.addEventListener("load", function (event) {
       const playButton = document.getElementById("play-button");
       playButton.addEventListener("click", function (evt) {
         evt.preventDefault();
-        textToSpeech(lyricsStorage.lyricsApiResponse);
+        textToSpeech(lyricsStorage.synonymizedLyricsApiResponse);
 
         // text to speech pause and resume button - if pauseResumeButton value is 1, it switches to 2 and pauses, then resumes if button is pressed again
         const pauseResumeButton = document.getElementById("pause-resume-button");
